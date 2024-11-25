@@ -1,0 +1,76 @@
+/* Global styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .dashboard-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 31px;
+    box-shadow: 16px 13px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  h2.title {
+    font-size: 28px;
+    color: #2e3a59;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .info {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .info strong {
+    font-weight: 600;
+  }
+  
+  .select-account {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .select-account label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+    font-weight: 600;
+  }
+  
+  .account-dropdown {
+    padding: 10px;
+    font-size: 16px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  
+  .account-dropdown:hover {
+    border-color: #2e3a59;
+  }
+  
+  .balance-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .balance {
+    font-size: 20px;
+    color: #4caf50;
+  }
+  
+  h4 {
+    margin: 0;
+  }
+  
