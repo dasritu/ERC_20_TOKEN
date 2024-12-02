@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import "../token.css";
+import { Routes, Route } from "react-router-dom";
 import TransferHistory from "./TransferHistory";
 import Dashboard from "./Dashboard";
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Navbar from "../Navbar";
+import "../token.css";
+import { ethers } from "ethers";
+
 const { abi } = require("../MyToken.json");
 
 function ERC20() {
   const [selectTransferAddress, setSelectTransferAddress] = useState("");
   const [readContract, setReadContract] = useState(null);
   const [writeContract, setWriteContract] = useState(null);
-
   const [amount, setAmount] = useState("");
   const [history, setHistory] = useState([]);
   const [accounts, setAccounts] = useState([]);
@@ -64,17 +63,18 @@ function ERC20() {
 
   useEffect(() => {
     const getConnectedBalance = async () => {
-      if (readContract) {
-        const connectedBalance = await readContract.balanceOf(connectedAcc);
-        setConnectedBalance(ethers.formatUnits(connectedBalance, 18));
+      if (readContract && connectedAcc) {
+        try {
+          const connectedBalance = await readContract.balanceOf(connectedAcc);
+          setConnectedBalance(ethers.formatUnits(connectedBalance, 18));
+        } catch (error) {
+          console.error("Error fetching balance:", error);
+        }
       }
     };
-    if (history.length > 0) {
-      getConnectedBalance();
-    }
-  }, [history, readContract, connectedAcc]);
 
-
+    getConnectedBalance();
+  }, [readContract, connectedAcc]);
 
   const transferToken = async () => {
     if (!writeContract) {
@@ -106,11 +106,11 @@ function ERC20() {
 
       const updatedHistory = [...history, newTransaction];
       setHistory(updatedHistory);
-      localStorage.setItem(
-        "TransactionHistory",
-        JSON.stringify(updatedHistory)
-      );
+      localStorage.setItem("TransactionHistory", JSON.stringify(updatedHistory));
       setAmount("");
+
+      const connectedBalance = await readContract.balanceOf(connectedAcc);
+      setConnectedBalance(ethers.formatUnits(connectedBalance, 18));
     } catch (error) {
       console.error("Error transferring tokens:", error);
       alert("Transfer failed. Please check the console for details.");
@@ -133,77 +133,71 @@ function ERC20() {
   const formatAddress = (addr) => `${addr.slice(0, 4)}....${addr.slice(-4)}`;
 
   return (
-    <Router>
-      <Navbar />
-      <div className="main-container">
-        
+    <div className="main-container">
+      <p className="connected-account">
+        Connected Account: {connectedAcc || "Not connected"} | Balance:
+        {connectedAccBalance || ""}
+      </p>
 
-        <p className="connected-account">
-          Connected Account: {connectedAcc || "Not connected"} | Balance:
-          {connectedAccBalance || ""}
-        </p>
-
-        {/* Router Routes */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Dashboard
-                accounts={accounts}
-                history={history}
-                readContract={readContract}
-                connectedAcc={connectedAcc}
-              />
-            }
-          />
-
-          <Route
-            path="/erc20transfer"
-            element={
-              <div className="transfer-container">
-                <div className="transfer">
-                  <h4>Transfer Token</h4>
-                  <div className="input">
-                    <label>Select Recipient Account</label>
-                    <select
-                      value={selectTransferAddress}
-                      onChange={(e) => setSelectTransferAddress(e.target.value)}
-                    >
-                      {accounts.map((acc, index) => (
-                        <option key={index} value={acc}>
-                          {formatAddress(acc)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="input">
-                    <label>Amount</label>
-                    <input
-                      type="text"
-                      value={amount}
-                      placeholder="Enter Amount"
-                      onChange={(e) => setAmount(e.target.value)}
-                    />
-                  </div>
-                  <button onClick={transferToken}>Transfer</button>
+      <Routes>
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard
+              accounts={accounts}
+              history={history}
+              readContract={readContract}
+              connectedAcc={connectedAcc}
+            />
+          }
+        />
+        <Route
+          path="/erc20transfer"
+          element={
+            <div className="transfer-container">
+              <div className="transfer">
+                <h4>Transfer Token</h4>
+                <div className="input">
+                  <label>Select Recipient Account</label>
+                  <select
+                    value={selectTransferAddress}
+                    onChange={(e) => setSelectTransferAddress(e.target.value)}
+                  >
+                    {accounts.map((acc, index) => (
+                      <option key={index} value={acc}>
+                        {formatAddress(acc)}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+                <div className="input">
+                  <label>Amount</label>
+                  <input
+                    type="text"
+                    value={amount}
+                    className="token-input"
+                    placeholder="Enter Amount"
+                    onChange={(e) => setAmount(e.target.value)}
+                  />
+                </div>
+                <button className="token-button" onClick={transferToken}>Transfer</button>
               </div>
-            }
-          />
-          <Route
-            path="/transferhistory"
-            element={
-              <TransferHistory
-                accounts={accounts}
-                history={history}
-                deleteItem={deleteItem}
-                formatAddress={formatAddress}
-              />
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+            </div>
+          }
+        />
+        <Route
+          path="/transferhistory"
+          element={
+            <TransferHistory
+              accounts={accounts}
+              history={history}
+              deleteItem={deleteItem}
+              formatAddress={formatAddress}
+            />
+          }
+        />
+      </Routes>
+    </div>
   );
 }
 

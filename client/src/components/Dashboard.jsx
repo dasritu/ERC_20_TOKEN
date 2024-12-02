@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import './Dashboard.css';  // Import the CSS file for styling
+import './Dashboard.css'; 
 
 function Dashboard({ accounts, history, readContract, connectedAcc }) {
-  const [selectedAccount, setSelectedAccount] = useState(accounts[0]);
+  const [selectedAccount, setSelectedAccount] = useState("");
   const [balance, setBalance] = useState(null);
   const [total, setTotal] = useState(null);
-  const [loadingBalance, setLoadingBalance] = useState(false); // Track balance loading state
+  const [loadingBalance, setLoadingBalance] = useState(false); 
 
   useEffect(() => {
     if (accounts.length > 0) {
       setSelectedAccount(accounts[0]);
+      checkBalance(accounts[0]); 
     }
-  }, [accounts]);
+  }, [accounts, readContract]); 
 
   const checkBalance = async (address) => {
     if (!readContract) {
@@ -24,16 +25,16 @@ function Dashboard({ accounts, history, readContract, connectedAcc }) {
       return;
     }
     try {
-      setLoadingBalance(true); // Start loading state
+      setLoadingBalance(true);
       const totalSupply = await readContract.balanceOf(address);
       const formattedBalance = ethers.formatUnits(totalSupply, 18);
       setBalance(formattedBalance);
-      setLoadingBalance(false); // End loading state
+      setLoadingBalance(false); 
     } catch (error) {
       console.log("Error fetching data", error);
       alert("Failed to fetch");
       setBalance("Error");
-      setLoadingBalance(false); // End loading state
+      setLoadingBalance(false); 
     }
   };
 
@@ -58,16 +59,9 @@ function Dashboard({ accounts, history, readContract, connectedAcc }) {
 
   useEffect(() => {
     if (selectedAccount) {
-      checkBalance(selectedAccount); // Fetch balance for selected account
+      checkBalance(selectedAccount); 
     }
-  }, [selectedAccount]); // Trigger balance update on account change
-
-  // Initial balance load for the first account on first render
-  useEffect(() => {
-    if (accounts.length > 0) {
-      checkBalance(accounts[0]); // Ensure balance is fetched for first account
-    }
-  }, [accounts]);
+  }, [selectedAccount]);
 
   return (
     <div className="dashboard-container">
@@ -103,7 +97,7 @@ function Dashboard({ accounts, history, readContract, connectedAcc }) {
       <div className="balance-container">
         <p>
           {loadingBalance ? (
-            <span>Loading...</span> // Show loading state
+            <span>Loading...</span> 
           ) : (
             balance && <h4 className="balance"><strong>Balance:</strong> {balance} MTK</h4>
           )}

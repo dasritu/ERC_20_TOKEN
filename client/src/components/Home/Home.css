@@ -1,0 +1,96 @@
+/* Home.css */
+
+/* Container for the whole page */
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f2f2f2; /* Light background color similar to login */
+  }
+  
+  .home-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  /* Heading style */
+  .home-heading {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* ERC20 image styling */
+  .erc20-image {
+    width: 128px;
+    height: 64px;
+    /* object-fit: contain; */
+    margin-bottom: 20px;
+    box-shadow: 4px 8px 11px grey;
+  }
+  
+  /* Links container */
+  .home-links {
+    font-size: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Individual link styling */
+  .home-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-radius: 30px;
+    transition: background-color 0.3s, transform 0.3s;
+    font-weight: 600;
+  }
+  
+  .home-link:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Separator (|) between the links */
+  .separator {
+    color: #ddd;
+    font-weight: 600;
+    font-size: 1.5em;
+  }
+  
+  /* Add responsiveness */
+  @media (max-width: 768px) {
+    .home-heading {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+  
+    .home-links {
+      flex-direction: column;
+    }
+  
+    .separator {
+      display: none;
+    }
+  
+    .home-link {
+      margin-bottom: 10px;
+    }
+  
+    .erc20-image {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+    }
+  }
+  

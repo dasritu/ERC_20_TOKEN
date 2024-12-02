@@ -32,6 +32,23 @@
     color: #e7c572; /* Highlight color on hover */
   }
   
+  .logout-btn {
+    border: none;
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px;
+    transition: color 0.3s ease;
+    background: #b42727;
+    border-radius: 20px;
+
+  }
+  
+  .logout-btn:hover {
+    color: #e7c572; /* Highlight color on hover */
+  }
+  
   @media (max-width: 768px) {
     .navbar-list {
       flex-direction: column;

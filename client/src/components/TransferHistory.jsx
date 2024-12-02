@@ -24,7 +24,7 @@ function TransferHistory({ accounts, history, deleteItem, formatAddress }) {
       
       {accounts.map((acc, index) => (
         <div key={index} style={{margin:"10px"}}>
-          <button onClick={() => openModal(acc)}>{formatAddress(acc)}</button>
+          <button className = "token-button" onClick={() => openModal(acc)}>{formatAddress(acc)}</button>
         </div>
       ))}
 
